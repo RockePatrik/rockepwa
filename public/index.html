@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ejemplo PWA</title>
+
+    <!-- Materialize  -->   
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    
+
+    <!-- CSS  -->   
+    
+    <link rel="stylesheet" href="css/estilos.css">
+
+    <link rel="icon" sizes="32x32" href="img/icon.png">
+
+
+   <!-- Color de la barra de navegación de Chrome. -->
+   <meta name="theme-color" content="#ffcb2d">
+
+   <!-- Configuración de la Web App Chrome y Microsoft Store. -->
+   <link rel="manifest" href="manifest.json">
+
+   <!-- Configuración para del acceso directo en Windows Edge/IE -->
+   <!-- Icono -->
+   <meta name="msapplication-TileImage" content="img/icon.png">
+   <!-- Color de tile. -->
+   <meta name="msapplication-TileColor" content="#4fc3f7">
+
+   <!-- Configuración para Web Clip en Safari. -->
+   <meta name="mobile-web-app-capable" content="yes">
+   <link rel="apple-touch-icon" sizes="1024x1024" href="img/icon.png">
+   <link rel="apple-touch-startup-image" sizes="1024x1024"
+     href="img/icon.png">
+   <meta name="apple-mobile-web-app-capable" content="yes">
+   <meta name="apple-mobile-web-app-status-bar-style" content="black">
+   
+
+   <!-- update the version number as needed -->
+   <script defer src="/__/firebase/6.0.2/firebase-app.js"></script>
+   <!-- include only the Firebase features as you need -->
+   <script defer src="/__/firebase/6.0.2/firebase-auth.js"></script>
+   <script defer src="/__/firebase/6.0.2/firebase-firestore.js"></script>
+   <script defer src="/__/firebase/6.0.2/firebase-messaging.js"></script>
+   <script defer src="/__/firebase/6.0.2/firebase-storage.js"></script>
+   <!-- initialize the SDK after all desired features are loaded -->
+   <script defer src="/__/firebase/init.js"></script>
+</head>
+
+<body>
+
+   <form name="vista">
+     <header>
+       <h1 class="titulo-font">Ejemplo de PWA</h1>
+     </header>
+     <main role="main">
+       <p><output name="mensaje">Cargando Firebase SDK&hellip;</output></p>
+     </main>
+   </form>
+     <footer class="page-footer grey lighten-5">
+        <div class="container">
+
+        </div>
+        <div class="footer-copyright">
+            <div class="container teal-text darken-4-text">
+             <b><i>Copyright  © <a class="teal-text  darken-4-text" href="#">Rocke Patricio Hernandez Nuñez IC-51</i></b></a>
+            </div>
+        </div>
+    </footer>
+ 
+   
+   <script>
+     /* Registra un service worker para instalar la aplicación en el
+      * caché del navegador. */
+     async function registraServiceWorker() {
+       if ("serviceWorker" in navigator) {
+         try {
+           const registro = await navigator.serviceWorker.register("sw.js");
+           console.log("Service Worker registrado.");
+           console.log(registro);
+         } catch (e) {
+           console.log(e);
+         }
+       }
+     }
+
+     registraServiceWorker();
+     document.addEventListener('DOMContentLoaded', function () {
+       try {
+         let app = firebase.app();
+         let features = ['auth', 'database', 'messaging', 'storage']
+           .filter(feature => typeof app[feature] === 'function');
+         document.vista.mensaje.value =
+           `Firebase SDK cargó con: ${features.join(', ')}`;
+       } catch (e) {
+         console.log(e);
+         document.vista.mensaje.value =
+           'Error cargando Firebase SDK. Revisa la consola del navegador.';
+       }
+     });
+   </script>
+ 
+    
+</body>
+
+</html>
